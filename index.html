@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You Friends</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at center, #000010, #0b1120, #0f1b2d);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* Bouncing mail button */
+    .message-btn {
+      position: relative;
+      width: 150px;
+      height: 120px;
+      background: #1e293b;
+      border-radius: 15px;
+      border: 3px solid #ff6b6b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5em;
+      color: #ff6b6b;
+      cursor: pointer;
+      animation: bounce 1.5s infinite, glowPulse 2s infinite;
+      z-index: 2;
+      box-shadow: 0 0 20px rgba(255,107,107,0.6);
+    }
+
+    .message-btn::before {
+      content: "✉️";
+      position: absolute;
+      font-size: 2.5em;
+      top: 10px;
+      color: #fff;
+      opacity: 0.9;
+    }
+
+    .heart {
+      font-size: 1.5em;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b; }
+      50% { box-shadow: 0 0 25px #ffd56b, 0 0 45px #ffd56b; }
+      100% { box-shadow: 0 0 10px #69b7ff, 0 0 30px #69b7ff; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+
+    /* Sparkle particles */
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ffd56b;
+      opacity: 0.8;
+      animation: float 3s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(0.8); opacity: 1; }
+      100% { transform: translateY(-120px) scale(0.2); opacity: 0; }
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 5;
+    }
+
+    .modal-content {
+      background: #121826;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 600px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .modal h2 {
+      margin-bottom: 15px;
+      font-size: 1.8em;
+      color: #ffd56b;
+    }
+
+    .modal p {
+      font-size: 1.05em;
+      line-height: 1.6;
+      color: #eee;
+      text-align: justify;
+    }
+
+    .close-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #ff6b6b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* Responsive */
+    @media(max-width:600px){
+      .message-btn { width: 120px; height: 100px; font-size: 3em; }
+      .modal-content { width: 95%; }
+      .modal h2 { font-size: 1.5em; }
+      .modal p { font-size: 0.95em; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Message button -->
+  <div class="message-btn" id="openModal">
+    <div class="heart">❤️</div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="thankYouModal">
+    <div class="modal-content">
+      <h2>Thank You My Wonderful Friends 🌟</h2>
+      <p>
+        I cannot express enough gratitude to all my amazing friends who made my birthday so
+        special and memorable. Every message, every smile, and every small gesture of love
+        touched my heart deeply. Birthdays are not just about cake or gifts, but about the
+        beautiful bonds we share with the people around us. Each one of you added happiness
+        and light to my day, and I feel truly blessed to be surrounded by friends who care
+        so much. The laughter, the warmth, and the joy you all brought made me realize how
+        rich I am in friendship. Thank you for making me feel loved, appreciated, and truly
+        celebrated. You all turned my birthday into a moment I will treasure forever. ❤️
+      </p>
+      <button class="close-btn" id="closeModal">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Modal logic
+    const openModal = document.getElementById("openModal");
+    const modal = document.getElementById("thankYouModal");
+    const closeModal = document.getElementById("closeModal");
+
+    openModal.onclick = () => { modal.style.display = "flex"; };
+    closeModal.onclick = () => { modal.style.display = "none"; };
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+
+    // Sparkles around mail
+    function createSparkle() {
+      const sparkle = document.createElement("div");
+      sparkle.classList.add("sparkle");
+      sparkle.style.left = (openModal.offsetLeft + openModal.offsetWidth/2 + (Math.random()*100 - 50)) + "px";
+      sparkle.style.top = (openModal.offsetTop + openModal.offsetHeight/2) + "px";
+      sparkle.style.background = ["#ff6b6b","#ffd56b","#69b7ff","#5eead4"][Math.floor(Math.random()*4)];
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 3000);
+    }
+    setInterval(createSparkle, 500);
+  </script>
+</body>
+</html>
